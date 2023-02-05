@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/regmarmcem/apprunner-example/models"
 	"github.com/regmarmcem/apprunner-example/services"
 )
 
@@ -26,6 +27,15 @@ func (c *TaskController) GetTaskHandler(w http.ResponseWriter, req *http.Request
 	task, err := c.service.GetTaskService(taskID)
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	json.NewEncoder(w).Encode(task)
+}
+
+func (c *TaskController) PostTaskHandler(w http.ResponseWriter, req *http.Request) {
+	var task models.Task
+	if err := json.NewDecoder(req.Body).Decode(&task); err != nil {
+		http.Error(w, "Cannot decode request body", http.StatusBadRequest)
 		return
 	}
 	json.NewEncoder(w).Encode(task)

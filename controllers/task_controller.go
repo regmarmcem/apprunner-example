@@ -21,11 +21,12 @@ func (c *TaskController) GetTaskHandler(w http.ResponseWriter, req *http.Request
 	taskID, err := strconv.Atoi(chi.URLParam(req, "id"))
 	if err != nil {
 		http.Error(w, "Path parameter must be a number", http.StatusBadRequest)
+		return
 	}
 	task, err := c.service.GetTaskService(taskID)
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
 	}
 	json.NewEncoder(w).Encode(task)
-	// w.Write([]byte("welcome"))
 }

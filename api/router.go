@@ -14,7 +14,7 @@ func NewRouter(db *sql.DB) *chi.Mux {
 	ser := services.NewTaskAppService(db)
 	tCon := controllers.NewTaskController(ser)
 
-	r.MethodFunc(http.MethodGet, "/task", tCon.GetTaskHandler)
+	r.MethodFunc(http.MethodGet, "/task/{id:[0-9]+}", tCon.GetTaskHandler)
 
 	return r
 }

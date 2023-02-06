@@ -8,6 +8,7 @@ import (
 
 type TaskServicer interface {
 	GetTaskService(taskID int) (models.Task, error)
+	PostTaskService(task models.Task) (models.Task, error)
 }
 
 type TaskAppService struct {

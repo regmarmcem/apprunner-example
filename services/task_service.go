@@ -21,3 +21,11 @@ func (s *TaskAppService) GetTaskService(taskID int) (models.Task, error) {
 	}
 	return task, nil
 }
+
+func (s *TaskAppService) PostTaskService(task models.Task) (models.Task, error) {
+	task, err := repositories.InsertTask(s.db, task)
+	if err != nil {
+		return models.Task{}, err
+	}
+	return task, nil
+}

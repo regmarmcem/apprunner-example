@@ -33,9 +33,15 @@ func (c *TaskController) GetTaskHandler(w http.ResponseWriter, req *http.Request
 }
 
 func (c *TaskController) PostTaskHandler(w http.ResponseWriter, req *http.Request) {
-	var task models.Task
-	if err := json.NewDecoder(req.Body).Decode(&task); err != nil {
+	var reqTask models.Task
+	if err := json.NewDecoder(req.Body).Decode(&reqTask); err != nil {
 		http.Error(w, "Cannot decode request body", http.StatusBadRequest)
+		return
+	}
+
+	task, err := c.service.PostTaskService(reqTask)
+	if err != nil {
+		http.Error(w, "Cannot insert specified task", http.StatusInternalServerError)
 		return
 	}
 	json.NewEncoder(w).Encode(task)

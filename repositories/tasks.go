@@ -33,3 +33,22 @@ func SelectTaskDetail(db *sql.DB, taskID int) (models.Task, error) {
 
 	return task, nil
 }
+
+func InsertTask(db *sql.DB, task models.Task) (models.Task, error) {
+	const sqlStr = `
+		insert into tasks (title, detail, created_at) values (?, ?, now());
+	`
+	var newTask models.Task
+	newTask.Title, newTask.Detail = task.Title, task.Detail
+
+	result, err := db.Exec(sqlStr, newTask.Title, newTask.Detail)
+	if err != nil {
+		log.Println("InsertTask failed")
+		return models.Task{}, err
+	}
+
+	id, _ := result.LastInsertId()
+	newTask.ID = int(id)
+
+	return newTask, nil
+}

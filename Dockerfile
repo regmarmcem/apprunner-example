@@ -14,5 +14,5 @@ RUN go build -o /taskapp
 
 EXPOSE 8080
 
-CMD ["./taskapp"]
+CMD ["/taskapp"]
 
